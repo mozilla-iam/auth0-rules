@@ -18,11 +18,24 @@ beforeEach(() => {
   output = undefined;
 });
 
+test('user in LDAP (ad) requires 2FA with enrollment', () => {
+  _context.clientID = '7fMOgA3HQ8QxD6nJ9A2JDgfi6qpr33wW';  // login-dev1
+  output = rule(_user, _context, configuration, Global);
+
+  expect(output.context.multifactor.host).toEqual(configuration.duo_apihost_mozilla);
+  expect(output.context.multifactor.ikey).toEqual(configuration.login_ikey_mozilla);
+  expect(output.context.multifactor.provider).toEqual('duo');
+  expect(output.context.multifactor.skey).toEqual(configuration.login_skey_mozilla);
+  expect(output.context.multifactor.username).toEqual(user.email);
+});
 
 test('user in LDAP (ad) requires 2FA', () => {
   output = rule(_user, _context, configuration, Global);
 
+  expect(output.context.multifactor.host).toEqual(configuration.duo_apihost_mozilla);
+  expect(output.context.multifactor.ikey).toEqual(configuration.duo_ikey_mozilla);
   expect(output.context.multifactor.provider).toEqual('duo');
+  expect(output.context.multifactor.skey).toEqual(configuration.duo_skey_mozilla);
   expect(output.context.multifactor.username).toEqual(user.email);
 });
 
@@ -38,4 +51,14 @@ test('email account not verified', () => {
   output = rule(_user, _context, configuration, Global);
 
   expect(output.context.redirect.url).toMatch('https://sso.mozilla.com/forbidden');
+});
+
+test('non-LDAP accounts don\'t require 2FA', () => {
+  _context.connectionStrategy = 'firefoxaccounts';
+  __context = _.cloneDeep(_context);
+
+  output = rule(_user, _context, configuration, Global);
+
+  expect(output.context).toEqual(__context);
+  expect(output.user).toEqual(user);
 });

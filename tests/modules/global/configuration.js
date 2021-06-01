@@ -13,6 +13,8 @@ module.exports = {
   "duo_ikey_mozilla": "FAKEFAKEFAKEFAKEFAKE",
   "duo_skey_mozilla": "fakefakefakefakefakefakefakefakefakefake",
   "duo_apihost_mozilla": "api-fakehost.duosecurity.com",
+  "login_ikey_mozilla": "FAKELOGINFAKELOGINFAKELOGIN",
+  "login_skey_mozilla": "fakeloginfakeloginfakeloginfakelogin",
 
   "iam_well_known": "https://auth.allizom.org/.well-known/mozilla-iam",
 
