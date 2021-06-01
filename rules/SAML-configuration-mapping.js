@@ -10,6 +10,10 @@ function (user, context, callback) {
   };
   const client = CLIENTS[context.clientID];
 
+  // many SAML implementations require your id (email address) twice, but SAML configurations
+  // inside auth0 can only map from an attribute once
+  user._email = user.email;
+
   // if it's not a client that uses SAML, exit immediately
   if (!client) {
     return callback(null, user, context);

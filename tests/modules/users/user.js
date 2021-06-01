@@ -20,6 +20,7 @@ module.exports = {
   "clientID": "fakefakefakefakefakefakefakefake",
   "created_at": "2017-06-16T19:59:19.553Z",
   "dn": "mail=jdoe@mozilla.com,o=com,dc=mozilla",
+  "_email": "jdoe@mozilla.com",
   "email": "jdoe@mozilla.com",
   "email_aliases": "jane@mozilla.com",
   "email_verified": true,
