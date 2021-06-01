@@ -23,11 +23,11 @@ deploy-local:
 
 deploy-stage:
 	@echo "Deploying to Auth0 stage instace in: $(URI)"
-	uploader_rules.py -r rules -u $(URI) -c $(CLIENTID) -s $(CLIENTSECRET)
+	uploader_rules.py -r rules -u $(URI) -i $(CLIENTID) -s $(CLIENTSECRET)
 
 deploy-prod:
 	@echo "Deploying to Auth0 Production instance in: $(URI)"
-	uploader_rules.py -r rules -u $(URI) -c $(CLIENTID) -s $(CLIENTSECRET)
+	uploader_rules.py -r rules -u $(URI) -i $(CLIENTID) -s $(CLIENTSECRET)
 
 
 .PHONY: venv all install deploy
