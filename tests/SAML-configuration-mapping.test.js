@@ -99,3 +99,16 @@ test('Acoustic prod', () => {
   });
 });
 
+test('BitSight', () => {
+  _context.clientID = 'eEAeYh6BMPfRyiSDax0tejjxkWi22zkP';
+  output = rule(_user, _context, configuration, Global);
+
+  expect(output.context.samlConfiguration.mappings).toEqual({
+    'urn:oid:0.9.2342.19200300.100.1.3': 'email',
+    'urn:oid:2.5.4.3': 'given_name',
+    'urn:oid:2.5.4.4': 'family_name',
+    'urn:oid:1.3.6.1.4.1.50993.1.1.2': 'app_metadata.bitsight_user_role'
+  });
+  expect(output.user.app_metadata.bitsight_user_role).toEqual('Customer Portfolio Manager');
+});
+

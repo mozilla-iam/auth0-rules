@@ -5,8 +5,9 @@ function (user, context, callback) {
     'cEfnJekrSStxxxBascTjNEDAZVUPAIU2': 'stripe-subplat',  // Stripe - subplat
     'inoLoMyAEOzLX1cZOvubQpcW18pk4O1S': 'acoustic-stage',  // Acoustic stage
     'sBImsybtPPLyWlstD0SC35IwnAafE4nB': 'acoustic-prod',   // Acoustic prod
-    'H5ddlJSCfGP8ab65EnWaB2sd541CJAlM': 'planful',   // Planful prod
-    'pUmRmcBrAJEdsgRTVXIW84jZoc3wtuYO': 'planful-dev',   // Planful dev
+    'H5ddlJSCfGP8ab65EnWaB2sd541CJAlM': 'planful',         // Planful prod
+    'pUmRmcBrAJEdsgRTVXIW84jZoc3wtuYO': 'planful-dev',     // Planful dev
+    'eEAeYh6BMPfRyiSDax0tejjxkWi22zkP': 'bitsight',        // BitSight
   };
   const client = CLIENTS[context.clientID];
 
@@ -18,6 +19,12 @@ function (user, context, callback) {
   // `context.samlConfiguration` should always be set
   // but this is a protective measure just in case
   context.samlConfiguration = context.samlConfiguration || {};
+
+  // In context.samlConfiguration.mappings the keys (left side) are the field
+  // names that the Relying Party (RP) is expecting.
+  // The values (right side) are the Auth0 profile field names
+  // For example a context.samlConfiguration.mappings of {'emailAddress': 'email'}
+  // Would map the contents of the Auth0 field 'email' into the RP's field 'emailAddress'
 
   switch(client) {
     case 'sage-intacct':
@@ -83,6 +90,18 @@ function (user, context, callback) {
         'firstName': 'given_name',
         'lastName': 'family_name'
       };
+
+      break;
+    case 'bitsight':
+      context.samlConfiguration.mappings = {
+        'urn:oid:0.9.2342.19200300.100.1.3': 'email',
+        'urn:oid:2.5.4.3': 'given_name',
+        'urn:oid:2.5.4.4': 'family_name'
+      };
+      // Grant every user the Customer Portfolio Manager role
+      // https://help.bitsighttech.com/hc/en-us/articles/360008185714-User-Roles
+      user.app_metadata['bitsight_user_role'] = 'Customer Portfolio Manager';
+      context.samlConfiguration.mappings['urn:oid:1.3.6.1.4.1.50993.1.1.2'] = 'app_metadata.bitsight_user_role';
 
       break;
   }
